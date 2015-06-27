@@ -2,6 +2,7 @@
 
 #include<stdlib.h>
 #include<iostream>
+#include<iomanip>
 #include<string>
 #include"Functions.h"
 #include"DataStructure.h"
@@ -25,7 +26,16 @@ void ReaderManagementFunction() {
 			AddReader();
 			break;
 		case 2:
+			SearchForReader();
+			break;
+		case 3:
 			PrintReaders();
+			break;
+		case 4:
+			SaveReaders();
+			break;
+		case 5:
+			LoadReaders();
 			break;
 		}
 	}
@@ -136,4 +146,62 @@ void SwapDataForReader(unsigned int one, unsigned int two) {
 			break;
 		}
 	}
+}
+
+void SearchForReader() {
+	using namespace std;
+	Reader * headReader = readers->head;
+	string tempStr;
+	unsigned int targetID = 0, result = 0;
+	cout << RM_SEARCH_INPUT;
+	cin >> tempStr;
+	for (unsigned int i = 0; i < tempStr.length(); i++) {
+		if (tempStr[i] >= '0' && tempStr[i] <= '9') {
+			targetID = targetID * 10 + tempStr[i] - 48;
+		}
+		else
+			break;
+	}
+	if (readers->count > 0)
+		result = SearchReaderByID(targetID);
+	if (result) {
+		result--;
+		cout << RM_SEARCH_SUCCESS << setw(7) << headReader[result].stdID << "\t" << setw(15) << headReader[result].name << endl;
+	}
+	else
+		cout << RM_SEARCH_FAILURE;
+	system("Pause");
+}
+
+unsigned int SearchReaderByID(unsigned int id) {
+	Reader * headReader = readers->head;
+	unsigned int target = 0;
+	unsigned upBound = readers->count - 1, downBound = 0;
+	while (1) {
+		if (upBound == downBound) {
+			if (headReader[upBound].stdID == id) target = upBound + 1;
+			else target = 0;
+			break;
+		}
+		if (upBound == downBound + 1) {
+			if (headReader[upBound].stdID == id) target = upBound + 1;
+			else if (headReader[downBound].stdID == id) target = downBound + 1;
+			else target = 0;
+			break;
+		}
+		target = (upBound - downBound) / 2;
+		if (headReader[target].stdID == id) {
+			target++;
+			break;
+		}
+		else {
+			if (headReader[target].stdID > id) {
+				upBound = target;
+			}
+			else {
+				downBound = target + 1;
+			}
+		}
+	}
+	return target;
 }

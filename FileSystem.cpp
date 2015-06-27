@@ -112,9 +112,9 @@ int SaveReaders() {
 
 int LoadReaders() {
 	using namespace std;
-	Reader * curReader = readers->head, *prevReader = NULL;
+	Reader * headReader = readers->head;
 	char buff[100];
-	unsigned int count = 0, tempID = 0;
+	unsigned int count = 0, tempID = 0, curID = readers->count;
 	int inputPtr = 0, ptrLoc = 0;
 	ifstream rea("rea.data");
 	if (!rea) return 1;
@@ -127,8 +127,32 @@ int LoadReaders() {
 			break;
 	}
 	for (unsigned int i = 0; i < count; i++) {
-
+		headReader = (Reader*)realloc(headReader, sizeof(Reader) * (curID + 1));
 		rea.getline(buff, 100);
-
+		for (ptrLoc = 0; ptrLoc < 100; ptrLoc++) {
+			if (buff[ptrLoc] >= '0' && buff[ptrLoc] <= '9') {
+				tempID = tempID * 10 + buff[ptrLoc] - 48;
+			}
+			else
+				break;
+		}
+		headReader[curID].stdID = tempID;
+		ptrLoc++;
+		for (; ptrLoc < 100; ptrLoc++) {
+			if (buff[ptrLoc] != '\0') {
+				headReader[curID].name[inputPtr] = buff[ptrLoc];
+				inputPtr++;
+			}
+			else
+				break;
+		}
+		headReader[curID].name[inputPtr] = '\0';
+		inputPtr = 0;
+		tempID = 0;
+		curID++;
 	}
+	readers->head = headReader;
+	readers->count = count;
+	readers->tail = &(headReader[count - 1]);
+	return 0;
 }

@@ -21,10 +21,12 @@
 #define		BM_SEARCH_SUCCESS	"图书已找到\n"
 #define		BM_SEARCH_FAILURE	"图书未找到\n"
 #define		RM_NAME				"读者管理\n"
-#define		RM_MENU				"0.返回\n1.添加新读者\n2.显示所有读者\n"
+#define		RM_MENU				"0.返回\n1.添加新读者\n2.查看读者信息\n3.显示所有读者\n"
 #define		RM_ADD_ID			"请输入读者ID:(输入0结束)\n"
 #define		RM_ADD_NAME			"请输入读者姓名：\n"
 #define		RM_INLLEGAL_NAME	"姓名无效或过长!\n"
-
+#define		RM_SEARCH_INPUT		"请输入要查询的学号：\n"
+#define		RM_SEARCH_SUCCESS	"用户已找到\n"
+#define		RM_SEARCH_FAILURE	"用户未找到\n"
 
 #endif

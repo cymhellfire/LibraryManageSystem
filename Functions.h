@@ -24,6 +24,8 @@ void AddReader();
 void PrintReaders();
 void QuickSortForReader(unsigned int begin, unsigned int end);
 void SwapDataForReader(unsigned int one, unsigned int two);
+void SearchForReader();
+unsigned int SearchReaderByID(unsigned int id);
 
 // File System
 int SaveLibrary();

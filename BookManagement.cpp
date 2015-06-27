@@ -147,7 +147,7 @@ void SearchForBook() {
 	using namespace std;
 	BookNode * headBook = library->head;
 	string tempStr;
-	unsigned int targetID = 0, result;
+	unsigned int targetID = 0, result = 0;
 	cout << BM_SEARCH_INPUT;
 	cin >> tempStr;
 	for (unsigned int i = 0; i < tempStr.length(); i++) {
@@ -157,26 +157,36 @@ void SearchForBook() {
 		else
 			break;
 	}
-	result = SearchByID(targetID);
-	if (result)
+	if (library->count > 0)
+		result = SearchByID(targetID);
+	if (result) {
+		result--;
 		cout << BM_SEARCH_SUCCESS << setw(7) << headBook[result].book->id << "\t" << setw(15) << headBook[result].book->name << "\t" << setw(15) << headBook[result].book->author << "\t" << setw(15) << headBook[result].book->press << endl;
+	}
 	else
 		cout << BM_SEARCH_FAILURE;
+	system("Pause");
  }
 
 unsigned int SearchByID(unsigned int id) {
 	BookNode * headBook = library->head;
 	unsigned int target = 0;
 	unsigned upBound = library->count - 1, downBound = 0;
-	while (upBound != downBound) {
+	while (1) {
+		if (upBound == downBound) {
+			if (headBook[upBound].book->id == id) target = upBound + 1;
+			else target = 0;
+			break;
+		}
 		if (upBound == downBound + 1) {
-			if (headBook[upBound].book->id == id) target = upBound;
-			else if(headBook[downBound].book->id == id) target = downBound;
+			if (headBook[upBound].book->id == id) target = upBound + 1;
+			else if(headBook[downBound].book->id == id) target = downBound + 1;
 			else target = 0;
 			break;
 		}
 		target = (upBound - downBound) / 2;
 		if (headBook[target].book->id == id) {
+			target++;
 			break;
 		}
 		else {
@@ -184,7 +194,7 @@ unsigned int SearchByID(unsigned int id) {
 				upBound = target;
 			}
 			else {
-				downBound = target;
+				downBound = target + 1;
 			}
 		}
 	}
